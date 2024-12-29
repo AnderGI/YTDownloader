@@ -11,6 +11,12 @@ This project is a FastAPI-based API that enables downloading video and audio seg
 - Automatically delete files after download or expiration.
 - File management and cleanup handled seamlessly in the background. 🔄🗂️✨
 
+## ToDo List
+
+- [ ] Fix Dockerfile
+- [ ] Fix Trim Videos (video is unsynced when using --download-section in `yt-dlp`)
+- [ ] Add X, TikTok & Instagram options
+
 ## Installation 🔧📥📦
 
 ### Prerequisites ⚠️🛠️🧰
@@ -31,20 +37,20 @@ This project is a FastAPI-based API that enables downloading video and audio seg
 2. Navigate to the project directory.
 3. Create a Virtual Environment:
 
-- ```bash
-   python -m venv venv
-  ```
+```bash
+ python -m venv venv
+```
 
 4. Activate the Virtual Environment:
 
 - Windows:
-  - ```bash
+  ```bash
     venv\\Scripts\\activate
-    ```
+  ```
 - Mac/Linux:
-  - ```bash
+  ```bash
     source venv/bin/activate
-    ```
+  ```
 
 3. Install the required Python dependencies:
    ```bash
@@ -158,4 +164,4 @@ The application uses a background thread to periodically remove expired files an
 
 ## License 📜🖋️🔓
 
-This project is licensed under the MIT License. See the `LICENSE` file for details. 📖⚖️✨
+This project is under no License because "no valen para una mierda salu2".
