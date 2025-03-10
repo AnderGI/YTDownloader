@@ -1,5 +1,6 @@
 from fastapi import FastAPI, HTTPException, Response
-from pydantic import BaseModel
+from pydantic import BaseModel, UUID4, HttpUrl, StringConstraints 
+from typing import Annotated
 import subprocess
 import uuid
 import os
@@ -26,6 +27,20 @@ os.makedirs(DOWNLOAD_DIR, exist_ok=True)
 
 # In-memory database for tracking downloads
 downloads = {}
+
+
+
+class TimeStampVideo(BaseModel):
+    timestamp: Annotated[
+        str, StringConstraints(pattern=r"^([01]\d|2[0-3]):([0-5]\d):([0-5]\d)$")
+    ]
+
+
+class YTVideoDownloadRequest(BaseModel):
+    url: HttpUrl
+    start_timestampt: TimeStampVideo
+    end_timestampt: TimeStampVideo
+
 
 class DownloadRequest(BaseModel):
     url: str
@@ -116,6 +131,11 @@ def start_download(request: DownloadRequest):
     threading.Thread(target=run_download).start()
 
     return DownloadStatus(id=download_id, status="pending", progress="0%", filepath=None)
+
+@app.put("/download/{download_uuid}")
+def put_start_download(download_uuid:UUID4, request: YTVideoDownloadRequest):
+    return Response(status_code = 202)
+
 
 @app.get("/download/{download_id}", response_model=DownloadStatus)
 def check_status(download_id: str):
