@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Response
 from pydantic import BaseModel
 import subprocess
 import uuid
@@ -38,6 +38,11 @@ class DownloadStatus(BaseModel):
     status: str  # pending, in_progress, completed, error
     progress: Optional[str]
     filepath: Optional[str]
+
+@app.get("/status")
+def status():
+    return Response(status_code = 200)
+
 
 @app.post("/download", response_model=DownloadStatus)
 def start_download(request: DownloadRequest):
