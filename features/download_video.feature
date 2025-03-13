@@ -8,8 +8,8 @@ Feature: download video endpoint
     """
     {
       "url": "https://www.youtube.com/watch?v=ig49C04bJt0",
-      "start_timestamp": "00:00:30",
-      "end_timestamp": "00:01:00"
+      "start": {"hour":0, "minute": 0, "second": 30},
+      "end": {"hour":0, "minute": 1, "second": 0}
     }
     """
     Then the response code should be 202
@@ -20,42 +20,85 @@ Feature: download video endpoint
     """
     {
       "url": "https://www.youtube.com/watch?v=ig49C04bJt0",
-      "start_timestamp": "00:00:30",
-      "end_timestamp": "00:01:00"
+      "start": {"hour":0, "minute": 0, "second": 30},
+      "end": {"hour":0, "minute": 1, "second": 0}
     }
     """
     Then the response code should be 422
 
-
-  Scenario: invalid url in json body request
-    Given the user sends a PUT request to "/download/cf29d0d3-005c-4692-ad05-7d0fe64b2841" with body:
+  Scenario: Ending Time is lower than starting time
+    Given the user sends a PUT request to "/download/9ab393d9-03bf-42d2-8904-e60cdf557013" with body:
     """
     {
-      "url": "lererererereñe",
-      "start_timestamp": "00:00:30",
-      "end_timestamp": "00:01:00"
+      "url": "https://www.youtube.com/watch?v=ig49C04bJt0",
+      "start": {"hour":0, "minute": 2, "second": 30},
+      "end": {"hour":0, "minute": 1, "second": 0}
+    }
+    """
+    Then the response code should be 422
+
+  Scenario: Negative hours
+    Given the user sends a PUT request to "/download/9ab393d9-03bf-42d2-8904-e60cdf557013" with body:
+    """
+    {
+      "url": "https://www.youtube.com/watch?v=ig49C04bJt0",
+      "start": {"hour":-1, "minute": 0, "second": 30},
+      "end": {"hour":-1, "minute": 0, "second": 0}
+    }
+    """
+    Then the response code should be 422
+
+  Scenario: Equal or above 24 hours
+    Given the user sends a PUT request to "/download/9ab393d9-03bf-42d2-8904-e60cdf557013" with body:
+    """
+    {
+      "url": "https://www.youtube.com/watch?v=ig49C04bJt0",
+      "start": {"hour":25, "minute": 24, "second": 30},
+      "end": {"hour":28, "minute": 0, "second": 0}
+    }
+    """
+    Then the response code should be 422
+
+  Scenario: Negative minutes 
+    Given the user sends a PUT request to "/download/9ab393d9-03bf-42d2-8904-e60cdf557013" with body:
+    """
+    {
+      "url": "https://www.youtube.com/watch?v=ig49C04bJt0",
+      "start": {"hour":2, "minute": -2, "second": 30},
+      "end": {"hour": 5, "minute": -54, "second": 0}
     }
     """
     Then the response code should be 422
   
-  Scenario: invalid start timestamp in json body request
-    Given the user sends a PUT request to "/download/cf29d0d3-005c-4692-ad05-7d0fe64b2841" with body:
+ Scenario: Equal or above 60 minutes
+    Given the user sends a PUT request to "/download/9ab393d9-03bf-42d2-8904-e60cdf557013" with body:
     """
     {
       "url": "https://www.youtube.com/watch?v=ig49C04bJt0",
-      "start_timestamp": true,
-      "end_timestamp": "00:01:00"
+      "start": {"hour":2, "minute": 60, "second": 30},
+      "end": {"hour": 5, "minute": 874, "second": 0}
     }
     """
     Then the response code should be 422
 
-  Scenario: invalid end timestamp in json body request
-    Given the user sends a PUT request to "/download/cf29d0d3-005c-4692-ad05-7d0fe64b2841" with body:
+  Scenario: Negative seconds
+    Given the user sends a PUT request to "/download/9ab393d9-03bf-42d2-8904-e60cdf557013" with body:
     """
     {
       "url": "https://www.youtube.com/watch?v=ig49C04bJt0",
-      "start_timestamp": "00:00:30",
-      "end_timestamp": "lerelerelerele"
+      "start": {"hour":2, "minute": 12, "second": -30},
+      "end": {"hour": 5, "minute": 47, "second": -4}
+    }
+    """
+    Then the response code should be 422
+
+  Scenario: Equal or above 60 seconds
+    Given the user sends a PUT request to "/download/9ab393d9-03bf-42d2-8904-e60cdf557013" with body:
+    """
+    {
+      "url": "https://www.youtube.com/watch?v=ig49C04bJt0",
+      "start": {"hour":2, "minute": 12, "second": 60},
+      "end": {"hour": 5, "minute": 47, "second": 48}
     }
     """
     Then the response code should be 422

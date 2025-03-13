@@ -4,6 +4,7 @@ from behave import given, when, then
 
 BASE_URL = "http://127.0.0.1:8000"
 
+
 @given('the user sends a PUT request to "{endpoint}" with body')
 def step_send_put_request(context, endpoint):
     body = json.loads(context.text)
