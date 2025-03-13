@@ -14,6 +14,17 @@ Feature: download video endpoint
     """
     Then the response code should be 202
 
+  Scenario: Valid start and end range but end range is lower than start rate
+    Given the user sends a PUT request to "/download/9ab393d9-03bf-42d2-8904-e60cdf557013" with body:
+    """
+    {
+      "url": "https://www.youtube.com/watch?v=ig49C04bJt0",
+      "start": {"hour":0, "minute": 1, "second": 30},
+      "end": {"hour":0, "minute": 0, "second": 30}
+    }
+    """
+    Then the response code should be 406
+
 
   Scenario: invalid uuid in path variable
     Given the user sends a PUT request to "/download/aghctcghgctctcv" with body:
@@ -21,17 +32,6 @@ Feature: download video endpoint
     {
       "url": "https://www.youtube.com/watch?v=ig49C04bJt0",
       "start": {"hour":0, "minute": 0, "second": 30},
-      "end": {"hour":0, "minute": 1, "second": 0}
-    }
-    """
-    Then the response code should be 422
-
-  Scenario: Ending Time is lower than starting time
-    Given the user sends a PUT request to "/download/9ab393d9-03bf-42d2-8904-e60cdf557013" with body:
-    """
-    {
-      "url": "https://www.youtube.com/watch?v=ig49C04bJt0",
-      "start": {"hour":0, "minute": 2, "second": 30},
       "end": {"hour":0, "minute": 1, "second": 0}
     }
     """

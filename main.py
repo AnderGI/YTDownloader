@@ -1,5 +1,7 @@
 from fastapi import FastAPI, Response
 from pydantic import BaseModel, UUID4, HttpUrl, Field
+from video.domain.YoutubeVideoRange import YoutubeVideoRange
+from video.domain.YoutubeVideoTimestampDict import YoutubeVideoTimestampDict
 
 app = FastAPI()
 
@@ -22,4 +24,21 @@ def status():
 
 @app.put("/download/{download_uuid}")
 def put_start_download(download_uuid: UUID4, request: YTVideoDownloadRequest):
-    return Response(status_code=202)
+    start: YoutubeVideoTimestampDict = {
+        "hour": int(request.start.hour),
+        "minute": int(request.start.minute),
+        "second": int(request.start.second)
+    }
+
+    end: YoutubeVideoTimestampDict = {
+        "hour": int(request.end.hour),
+        "minute": int(request.end.minute),
+        "second": int(request.end.second)
+    }
+
+    try:
+        ytvideoentity = YoutubeVideoRange(start=start, end=end)
+        print(ytvideoentity)
+        return Response(status_code=202)
+    except ValueError:
+        return Response(status_code=406)
