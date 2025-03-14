@@ -1,0 +1,110 @@
+Feature: download video endpoint # tests/apps/backoffice/features/download_video.feature:1
+  users want to download videos from youtube
+  for that they will pass the start and end timestamp of a video as well as the video id
+  moreover clients will be forced to use PUT method so they are the ones that generate the id
+  Scenario: happy path                                                                               # tests/apps/backoffice/features/download_video.feature:6
+    Given the user sends a PUT request to "/download/9ab393d9-03bf-42d2-8904-e60cdf557013" with body # tests/apps/backoffice/features/steps/download_video.py:8
+      """
+      {
+        "url": "https://www.youtube.com/watch?v=ig49C04bJt0",
+        "start": {"hour":0, "minute": 0, "second": 30},
+        "end": {"hour":0, "minute": 1, "second": 0}
+      }
+      """
+    Then the response code should be 202                                                             # tests/apps/backoffice/features/steps/download_video.py:13
+
+  Scenario: Valid start and end range but end range is lower than start rate                         # tests/apps/backoffice/features/download_video.feature:17
+    Given the user sends a PUT request to "/download/9ab393d9-03bf-42d2-8904-e60cdf557013" with body # tests/apps/backoffice/features/steps/download_video.py:8
+      """
+      {
+        "url": "https://www.youtube.com/watch?v=ig49C04bJt0",
+        "start": {"hour":0, "minute": 1, "second": 30},
+        "end": {"hour":0, "minute": 0, "second": 30}
+      }
+      """
+    Then the response code should be 406                                                             # tests/apps/backoffice/features/steps/download_video.py:13
+
+  Scenario: invalid uuid in path variable                                       # tests/apps/backoffice/features/download_video.feature:29
+    Given the user sends a PUT request to "/download/aghctcghgctctcv" with body # tests/apps/backoffice/features/steps/download_video.py:8
+      """
+      {
+        "url": "https://www.youtube.com/watch?v=ig49C04bJt0",
+        "start": {"hour":0, "minute": 0, "second": 30},
+        "end": {"hour":0, "minute": 1, "second": 0}
+      }
+      """
+    Then the response code should be 422                                        # tests/apps/backoffice/features/steps/download_video.py:13
+
+  Scenario: Negative hours                                                                           # tests/apps/backoffice/features/download_video.feature:40
+    Given the user sends a PUT request to "/download/9ab393d9-03bf-42d2-8904-e60cdf557013" with body # tests/apps/backoffice/features/steps/download_video.py:8
+      """
+      {
+        "url": "https://www.youtube.com/watch?v=ig49C04bJt0",
+        "start": {"hour":-1, "minute": 0, "second": 30},
+        "end": {"hour":-1, "minute": 0, "second": 0}
+      }
+      """
+    Then the response code should be 422                                                             # tests/apps/backoffice/features/steps/download_video.py:13
+
+  Scenario: Equal or above 24 hours                                                                  # tests/apps/backoffice/features/download_video.feature:51
+    Given the user sends a PUT request to "/download/9ab393d9-03bf-42d2-8904-e60cdf557013" with body # tests/apps/backoffice/features/steps/download_video.py:8
+      """
+      {
+        "url": "https://www.youtube.com/watch?v=ig49C04bJt0",
+        "start": {"hour":25, "minute": 24, "second": 30},
+        "end": {"hour":28, "minute": 0, "second": 0}
+      }
+      """
+    Then the response code should be 422                                                             # tests/apps/backoffice/features/steps/download_video.py:13
+
+  Scenario: Negative minutes                                                                         # tests/apps/backoffice/features/download_video.feature:62
+    Given the user sends a PUT request to "/download/9ab393d9-03bf-42d2-8904-e60cdf557013" with body # tests/apps/backoffice/features/steps/download_video.py:8
+      """
+      {
+        "url": "https://www.youtube.com/watch?v=ig49C04bJt0",
+        "start": {"hour":2, "minute": -2, "second": 30},
+        "end": {"hour": 5, "minute": -54, "second": 0}
+      }
+      """
+    Then the response code should be 422                                                             # tests/apps/backoffice/features/steps/download_video.py:13
+
+  Scenario: Equal or above 60 minutes                                                                # tests/apps/backoffice/features/download_video.feature:73
+    Given the user sends a PUT request to "/download/9ab393d9-03bf-42d2-8904-e60cdf557013" with body # tests/apps/backoffice/features/steps/download_video.py:8
+      """
+      {
+        "url": "https://www.youtube.com/watch?v=ig49C04bJt0",
+        "start": {"hour":2, "minute": 60, "second": 30},
+        "end": {"hour": 5, "minute": 874, "second": 0}
+      }
+      """
+    Then the response code should be 422                                                             # tests/apps/backoffice/features/steps/download_video.py:13
+
+  Scenario: Negative seconds                                                                         # tests/apps/backoffice/features/download_video.feature:84
+    Given the user sends a PUT request to "/download/9ab393d9-03bf-42d2-8904-e60cdf557013" with body # tests/apps/backoffice/features/steps/download_video.py:8
+      """
+      {
+        "url": "https://www.youtube.com/watch?v=ig49C04bJt0",
+        "start": {"hour":2, "minute": 12, "second": -30},
+        "end": {"hour": 5, "minute": 47, "second": -4}
+      }
+      """
+    Then the response code should be 422                                                             # tests/apps/backoffice/features/steps/download_video.py:13
+
+  Scenario: Equal or above 60 seconds                                                                # tests/apps/backoffice/features/download_video.feature:95
+    Given the user sends a PUT request to "/download/9ab393d9-03bf-42d2-8904-e60cdf557013" with body # tests/apps/backoffice/features/steps/download_video.py:8
+      """
+      {
+        "url": "https://www.youtube.com/watch?v=ig49C04bJt0",
+        "start": {"hour":2, "minute": 12, "second": 60},
+        "end": {"hour": 5, "minute": 47, "second": 48}
+      }
+      """
+    Then the response code should be 422                                                             # tests/apps/backoffice/features/steps/download_video.py:13
+
+Feature: status health-check endpoint # tests/apps/backoffice/features/health_check.feature:1
+
+  Scenario: check for server status              # tests/apps/backoffice/features/health_check.feature:3
+    Given the server is up and running correctly # tests/apps/backoffice/features/steps/health_check.py:5
+    When a GET request is sent to "/status"      # tests/apps/backoffice/features/steps/health_check.py:9
+    Then the response code should be 200         # tests/apps/backoffice/features/steps/download_video.py:13
+

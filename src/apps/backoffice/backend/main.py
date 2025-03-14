@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Response
 from pydantic import BaseModel, UUID4, HttpUrl, Field
-from video.domain.YoutubeVideoRange import YoutubeVideoRange
-from video.domain.YoutubeVideoTimestampDict import YoutubeVideoTimestampDict
+from src.contexts.backoffice.youtubevideo.domain.YoutubeVideoRange import YoutubeVideoRange
+from src.contexts.backoffice.youtubevideo.domain.YoutubeVideoTimestampDict import YoutubeVideoTimestampDict
 
 app = FastAPI()
 

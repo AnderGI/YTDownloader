@@ -81,6 +81,10 @@ Run the FastAPI server with `uvicorn`:
 
 ```bash
 uvicorn main:app --reload
+
+
+uvicorn src.apps.backoffice.backend.main:app --reload
+
 ```
 
 By default, the server will run at `http://127.0.0.1:8000`. 🌐📍⚡
