@@ -1,7 +1,8 @@
 from fastapi import FastAPI, Response
 from pydantic import BaseModel, UUID4, HttpUrl, Field
-from src.contexts.backoffice.youtubevideo.domain.YoutubeVideoRange import YoutubeVideoRange
 from src.contexts.backoffice.youtubevideo.domain.YoutubeVideoTimestampDict import YoutubeVideoTimestampDict
+from src.contexts.backoffice.youtubevideo.application.YoutubeVideoDownloader import YoutubeVideoDownloader
+from src.contexts.backoffice.youtubevideo.infrastructure.YTDLPYoutubeVideoExtractor import YTDLPYoutubeVideoExtractor 
 
 app = FastAPI()
 
@@ -37,8 +38,9 @@ def put_start_download(download_uuid: UUID4, request: YTVideoDownloadRequest):
     }
 
     try:
-        ytvideoentity = YoutubeVideoRange(start=start, end=end)
-        print(ytvideoentity)
+        extractor = YTDLPYoutubeVideoExtractor()
+        downloader = YoutubeVideoDownloader(extractor)
+        downloader.run(start, end)
         return Response(status_code=202)
     except ValueError:
         return Response(status_code=406)

@@ -1,8 +1,8 @@
-from .YoutubeVideoTimestampDict import YoutubeVideoTimestampDict
-from .YoutubeVideoStartRange import YoutubeVideoStartRange
-from .YoutubeVideoEndRange import YoutubeVideoEndRange
+from src.contexts.backoffice.youtubevideo.domain.YoutubeVideoTimestampDict import YoutubeVideoTimestampDict
+from src.contexts.backoffice.youtubevideo.domain.YoutubeVideoStartRange import YoutubeVideoStartRange
+from src.contexts.backoffice.youtubevideo.domain.YoutubeVideoEndRange import YoutubeVideoEndRange
 
-class YoutubeVideoRange:
+class YoutubeVideo:
 
     def __init__(self, start: YoutubeVideoTimestampDict, end: YoutubeVideoTimestampDict):
         self.start_range = YoutubeVideoStartRange(start)

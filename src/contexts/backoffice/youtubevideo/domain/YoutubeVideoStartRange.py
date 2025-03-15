@@ -1,4 +1,4 @@
-from .YoutubeVideoTimestampDict import YoutubeVideoTimestampDict
+from src.contexts.backoffice.youtubevideo.domain.YoutubeVideoTimestampDict import YoutubeVideoTimestampDict
     
 class YoutubeVideoStartRange:
     def __init__(self, time: YoutubeVideoTimestampDict):
