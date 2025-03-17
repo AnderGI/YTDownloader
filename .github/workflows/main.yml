@@ -27,3 +27,11 @@ jobs:
            pip list
       - name : show folders
         run: ls -la
+      - name : run server
+        run: nohup uvicorn src.apps.backoffice.backend.main:app --reload > uvicorn.log 2>&1 &
+      - name : find process
+        run : ps aux | grep uvicorn
+      - name: kill server
+        run: pskill -f uvicorn
+      - name : find process
+        run : ps aux | grep uvicorn
