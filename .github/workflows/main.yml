@@ -32,6 +32,6 @@ jobs:
       - name : find process
         run : ps aux | grep uvicorn
       - name: kill server
-        run: pskill -f uvicorn
+        run: pkill -f uvicorn
       - name : find process
         run : ps aux | grep uvicorn
