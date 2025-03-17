@@ -5,8 +5,7 @@ from src.contexts.backoffice.youtubevideo.application.DownloadYoutubeVideoComman
 class YoutubeVideoDownloader:
   def __init__(self, extractor:YoutubeVideoExtractor) -> None:
     self.extractor = extractor
-    
 
   def run(self, command:DownloadYoutubeVideoCommand) -> None:
-    _ = YoutubeVideo(id=command.id, start=command.start, end=command.end)
+    _ = YoutubeVideo.create(id=command.id, url=command.url, start=command.start, end=command.end)
     self.extractor.extract(_)

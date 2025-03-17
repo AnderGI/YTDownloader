@@ -4,6 +4,7 @@ from src.contexts.backoffice.youtubevideo.domain.YoutubeVideoTimestampDict impor
 from src.contexts.backoffice.youtubevideo.application.YoutubeVideoDownloader import YoutubeVideoDownloader
 from src.contexts.backoffice.youtubevideo.infrastructure.YTDLPYoutubeVideoExtractor import YTDLPYoutubeVideoExtractor 
 from src.contexts.backoffice.youtubevideo.application.DownloadYoutubeVideoCommand  import DownloadYoutubeVideoCommand
+import os
 
 app = FastAPI()
 
@@ -41,8 +42,20 @@ def put_start_download(download_uuid: UUID4, request: YTVideoDownloadRequest):
     try:
         extractor = YTDLPYoutubeVideoExtractor()
         downloader = YoutubeVideoDownloader(extractor)
-        command = DownloadYoutubeVideoCommand(download_uuid.hex, start, end)
+        command = DownloadYoutubeVideoCommand(download_uuid.hex,str(request.url), start, end)
         downloader.run(command)
         return Response(status_code=202)
     except ValueError:
         return Response(status_code=406)
+    
+
+@app.get("/download/status/{video_id}")
+def get_download_status(video_id: str):
+    video_id = video_id.replace('-', '')
+    download_dir = os.path.join(os.getenv("PYTHONPATH", os.getcwd()), "downloads")
+    output_file = os.path.join(download_dir, f"{video_id.replace('-', '')}.mp3")
+    
+    if os.path.exists(output_file):
+        return {"video_id": video_id, "status": "completed"}
+    else:
+        return {"status": "404 Not Found"}

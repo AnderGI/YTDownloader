@@ -4,9 +4,10 @@ from src.contexts.backoffice.youtubevideo.domain.YoutubeVideoTimestampDict impor
 @dataclass
 class DownloadYoutubeVideoCommand:
     id: str
+    url:str
     start: YoutubeVideoTimestampDict
     end: YoutubeVideoTimestampDict
     
     @classmethod
-    def create(cls, id: str, start: YoutubeVideoTimestampDict, end: YoutubeVideoTimestampDict) -> 'DownloadYoutubeVideoCommand':
-        return cls(id=id, start=start, end=end)
+    def create(cls, id: str,url:str, start: YoutubeVideoTimestampDict, end: YoutubeVideoTimestampDict) -> 'DownloadYoutubeVideoCommand':
+        return cls(id,url, start, end)
