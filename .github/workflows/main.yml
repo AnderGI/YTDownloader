@@ -1,5 +1,5 @@
 name: Python package
-run-name: ${{ github.ref.heads.main }} CI/CD 🚀
+run-name: ${{ github.ref_name }} CI/CD 🚀
 
 on: [push]
 
