@@ -6,6 +6,6 @@ class YoutubeVideoMother:
     def from_command(
         command:DownloadYoutubeVideoCommand
     ) -> YoutubeVideo:  
-        return YoutubeVideo.create(id=command.id, start=command.start, end=command.end)
+        return YoutubeVideo.create(id=command.id,url= command.url, start=command.start, end=command.end)
     
    
