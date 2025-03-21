@@ -1,6 +1,6 @@
 run:
 	uvicorn src.apps.backoffice.backend.main:app --reload &
-e2e:
-	behave
 unit:
-	pytest
+	PYTHONPATH=. pytest
+e2e:
+	PYTHONPATH=. behave
