@@ -7,6 +7,7 @@ import os
 class YTDLPYoutubeVideoExtractor(YoutubeVideoExtractor):
     def __init__(self):
       self.download_dir = os.path.join(os.getenv("PYTHONPATH", os.getcwd()), "downloads")
+      os.makedirs(self.download_dir, exist_ok=True) 
       pass
 
     def extract(self, _: YoutubeVideo) -> None:
