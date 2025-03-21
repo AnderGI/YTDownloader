@@ -1,6 +1,5 @@
 from src.contexts.backoffice.youtubevideo.domain.YoutubeVideoExtractor import YoutubeVideoExtractor
 from src.contexts.backoffice.youtubevideo.domain.YoutubeVideo import YoutubeVideo
-import subprocess
 from subprocess import Popen, PIPE, STDOUT
 import threading
 import os
@@ -11,6 +10,8 @@ class YTDLPYoutubeVideoExtractor(YoutubeVideoExtractor):
       pass
 
     def extract(self, _: YoutubeVideo) -> None:
+        if any(_.id in filename for filename in os.listdir(self.download_dir)):
+            return
         start_time = "{:02d}:{:02d}:{:02d}".format(
             _.timestamp_range.start_range.hour,
             _.timestamp_range.start_range.minute,

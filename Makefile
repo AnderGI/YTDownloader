@@ -3,4 +3,4 @@ run:
 e2e:
 	behave
 unit:
-	clear && pytest
+	pytest
