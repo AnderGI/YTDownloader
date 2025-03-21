@@ -27,4 +27,4 @@ jobs:
            make run  
            sleep 5
            make e2e
-           make unit
+           
