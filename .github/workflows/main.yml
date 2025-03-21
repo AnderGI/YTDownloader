@@ -22,7 +22,6 @@ jobs:
            python -m venv venv
            source venv/bin/activate 
            pip install --upgrade pip
-           pip freeze > requirements.txt
            pip install -r requirements.txt
            pip list
       - name : show folders
